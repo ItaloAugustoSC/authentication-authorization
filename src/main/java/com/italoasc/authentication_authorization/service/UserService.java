@@ -1,6 +1,7 @@
 package com.italoasc.authentication_authorization.service;
 
 import com.italoasc.authentication_authorization.entity.User;
+import com.italoasc.authentication_authorization.model.UserRegisterRequest;
 import com.italoasc.authentication_authorization.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
+
+import static com.italoasc.authentication_authorization.mapper.UserMapper.userMapper;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -33,10 +36,22 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public String register(User user) {
+    public String register(UserRegisterRequest userRegisterRequest) {
+//        if (user.isMfaEnabled()){
+//            if (user.getMfaType().equals("EMAIL")){
+//                user.setMfaType(MfaType.EMAIL);
+//            } else if (user.getMfaType().equals("SMS")) {
+//                user.setMfaType(MfaType.SMS);
+//            }
+//        }
+        User user = userMapper.map(userRegisterRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return "Usuário registrado com sucesso!";
+    }
+
+    public User findUserByUsername(String username){
+        return userRepository.findByUsername(username).orElseThrow();
     }
 }
 

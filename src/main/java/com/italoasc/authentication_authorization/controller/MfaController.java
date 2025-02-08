@@ -28,8 +28,11 @@ public class MfaController {
     private MfaMapper mapper;
 
     @PostMapping("/enable")
-    public ResponseEntity<?> enableMfa(@RequestParam String username, String type) throws Exception {
+    public ResponseEntity<?> enableMfa(@RequestParam String username,@RequestParam String type) throws Exception {
         User user = userRepository.findByUsername(username).orElseThrow();
+        if(user.isMfaEnabled()){
+            return ResponseEntity.ok("Usuário com MFA já ativo");
+        }
         user.setMfaEnabled(true);
         user.setMfaType(type);
         userRepository.save(user);

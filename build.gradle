@@ -50,6 +50,13 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
+	implementation(platform("software.amazon.awssdk:bom:2.27.21"))
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ses
+	implementation 'com.amazonaws:aws-java-sdk-ses:1.12.778'
+
 }
 
 tasks.named('test') {
